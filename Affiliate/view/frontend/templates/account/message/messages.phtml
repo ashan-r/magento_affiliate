@@ -1,0 +1,158 @@
+<?php
+
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+
+$customerSession = $objectManager->create("Magento\Customer\Model\Session");
+
+if($customerSession->isLoggedIn()){
+    $customer_id= $customerSession->getCustomerId();
+}
+
+
+$collection = $this->getTestCollection();
+$user_id = $this->getAffUserID();
+
+//echo $user_id;exit;
+
+?>
+<?php if ($block->getPagerHtml()): ?>
+    <div class="order-products-toolbar toolbar bottom"><?php echo $block->getPagerHtml(); ?></div>
+<?php endif ?>
+    <table class="data table" id="test-data-table">
+        <caption class="table-caption">Vky Test Data</caption>
+        <thead>
+        <tr>
+            <th scope="col" class="col title">Affiliate Level</th>
+            <th scope="col" class="col author">code</th>
+            <th scope="col" class="col tree">tree</th>
+            <th scope="col" class="col parent">Parent</th>
+            <th scope="col" class="col created_at">Email</th>
+            <th scope="col" class="col actions">Select All <input type="checkbox" name="select_add" ></th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php
+                foreach ($collection as $key => $data): ?>
+
+        <?php
+                  $tree_str = $data->getTree(); //AFFILIATE TREE
+                  $tree_arr = explode("/",$tree_str);
+                  $head_member = $tree_arr[0];//TOP AFFILIATE NODE
+                  $arr_size = sizeof($tree_arr); //AFFILIATE NODE COUNT
+                  $parent = $tree_arr[$arr_size-1]; //AFFILIATE MEMBER PARENT
+
+
+                if($head_member == $customer_id){
+
+                 if($arr_size>0){
+                     if($arr_size == 5){
+                         ?>
+                         <tr style="background-color:#e4b9c0" tree="1">
+<!--                             <td data-th="Title" class="col title"> --><?php ////echo $data->getCustomer_id(); ?><!-- </td>-->
+                             <td data-th="Title" class="col title"> Level 04 </td>
+                             <td data-th="Author" class="col author"> <?php echo $data->getCode(); ?> </td>
+                             <td data-th="Author" class="col tree"> <?php echo $data->getTree(); ?> </td>
+                             <td data-th="Content" class="col parent"> <?php
+                                 if ($data->getParent() == "") {
+                                     echo '-';
+                                 } else{
+                                     echo $data->getParent();
+                                 }
+                                 ?></td>
+                             <td data-th="Date" class="col created_at"> <?php echo $data->getEmail(); ?></td>
+                             <td data-th="Actions" class="col actions">
+                                 <input type="checkbox"  name="aff_customer" value="<?php echo $data->getCustomer_id(); ?>" class="action view">
+                             </td>
+                         </tr>
+
+                     <?php }
+
+                     elseif($arr_size == 4){
+                         ?>
+                         <tr style="background-color:#fead83" tree="2">
+                             <td data-th="Title" class="col title"> Level 03 </td>
+                             <td data-th="Author" class="col author"> <?php echo $data->getCode(); ?> </td>
+                             <td data-th="Author" class="col tree"> <?php echo $data->getTree(); ?> </td>
+                             <td data-th="Content" class="col parent"> <?php
+                                 if ($data->getParent() == "") {
+                                     echo '-';
+                                 } else{
+                                     echo $data->getParent();
+                                 }
+                                 ?></td>
+                             <td data-th="Date" class="col created_at"> <?php echo $data->getEmail(); ?></td>
+                             <td data-th="Actions" class="col actions">
+                                 <input type="checkbox"  name="aff_customer" value="<?php echo $data->getCustomer_id(); ?>" class="action view">
+                             </td>
+                         </tr>
+
+                     <?php }
+
+                    elseif($arr_size == 3){
+                    ?>
+                    <tr style="background-color:green" tree="3">
+                        <td data-th="Title" class="col title"> Level 02 </td>
+                        <td data-th="Author" class="col author"> <?php echo $data->getCode(); ?> </td>
+                        <td data-th="Author" class="col tree"> <?php echo $data->getTree(); ?> </td>
+                        <td data-th="Content" class="col parent"> <?php
+                          if ($data->getParent() == "") {
+                              echo '-';
+                          } else{
+                              echo $data->getParent();
+                          }
+                          ?></td>
+                        <td data-th="Date" class="col created_at"> <?php echo $data->getEmail(); ?></td>
+                        <td data-th="Actions" class="col actions">
+                            <input type="checkbox"  name="aff_customer" value="<?php echo $data->getCustomer_id(); ?>" class="action view">
+                        </td>
+                    </tr>
+
+                     <?php }
+
+                     elseif($arr_size == 2){
+                     ?>
+                     <tr style="background-color:#2ea9ec" tree="4">
+                         <td data-th="Title" class="col title"> Level 01  </td>
+                         <td data-th="Author" class="col author"> <?php echo $data->getCode(); ?> </td>
+                         <td data-th="Author" class="col tree"> <?php echo $data->getTree(); ?> </td>
+                         <td data-th="Content" class="col parent"> <?php
+                             if ($data->getParent() == "") {
+                                 echo '-';
+                             } else{
+                                 echo $data->getParent();
+                             }
+                             ?></td>
+                         <td data-th="Date" class="col created_at"> <?php echo $data->getEmail(); ?></td>
+                         <td data-th="Actions" class="col actions">
+                             <input type="checkbox"  name="aff_customer" value="<?php echo $data->getCustomer_id(); ?>" class="action view">
+                         </td>
+                     </tr>
+
+                 <?php }   elseif($arr_size == 1){  ?>
+
+    <!--                   <tr style="background-color:#d2c69e" tree="5">-->
+    <!--                        <td data-th="Title" class="col title">  Level 5 </td>-->
+    <!--                        <td data-th="Author" class="col author"> --><?php //echo $data->getCode(); ?><!-- </td>-->
+    <!--                        <td data-th="Author" class="col tree"> --><?php //echo $data->getTree(); ?><!-- </td>-->
+    <!--                        <td data-th="Content" class="col parent"> --><?php
+    //                            if ($data->getParent() == "") {
+    //                                echo '-';
+    //                            } else{
+    //                                echo $data->getParent();
+    //                            }
+    //                            ?><!--</td>-->
+    <!--                        <td data-th="Date" class="col created_at"> --><?php //echo $data->getEmail(); ?><!--</td>-->
+    <!--                        <td data-th="Actions" class="col actions">-->
+    <!--                            <input type="checkbox"  name="aff_customer" value="--><?php //echo $data->getCustomer_id(); ?><!--" class="action view">-->
+    <!--                        </td>-->
+    <!--                    </tr>-->
+
+             <?php }  ?>
+
+             <?php }  } ?>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+<?php if ($block->getPagerHtml()): ?>
+    <div class="order-products-toolbar toolbar bottom"><?php echo $block->getPagerHtml(); ?></div>
+<?php endif ?>

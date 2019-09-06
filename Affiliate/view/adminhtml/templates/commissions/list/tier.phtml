@@ -1,0 +1,48 @@
+<?php
+/**
+ * Mageplaza
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Mageplaza.com license that is
+ * available through the world-wide-web at this URL:
+ * https://www.mageplaza.com/LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category    Mageplaza
+ * @package     Mageplaza_Affiliate
+ * @copyright   Copyright (c) Mageplaza (https://www.mageplaza.com/)
+ * @license     https://www.mageplaza.com/LICENSE.txt
+ */
+
+$element        = $block->getElement();
+?>
+<div class="field" id="attribute-<?php echo $element->getHtmlId() ?>-container" data-attribute-code="<?php echo $element->getHtmlId() ?>"
+     data-apply-to="<?php echo $block->escapeHtml(
+         $this->helper('Magento\Framework\Json\Helper\Data')->jsonEncode(
+             $element->hasEntityAttribute() ? $element->getEntityAttribute()->getApplyTo() : []
+         )
+     ) ?>">
+    <label class="commission-list-label"><span><?php echo $block->getElement()->getLabel() ?></span></label>
+    <div class="control">
+        <table class="admin__control-table commission_tiers_table" id="commission_tiers_table">
+            <thead>
+                <tr>
+                    <th class="col-tier-number"><?php /* @escapeNotVerified */ echo __('Tier') ?></th>
+                    <th class="col-1st-order-type"><?php /* @escapeNotVerified */ echo __('Type (1st Order)') ?></th>
+                    <th class="col-1st-value"><?php /* @escapeNotVerified */ echo __('Value (1st Order)') ?></th>
+                    <th class="col-next-order-type"><?php /* @escapeNotVerified */ echo __('Type (Next orders)') ?></th>
+                    <th class="col-next-order-value"><?php /* @escapeNotVerified */ echo __('Value (Next orders)') ?></th>
+					<?php echo $block->addExtraTHead() ?>
+                </tr>
+            </thead>
+            <?php echo $block->getBodyCommission() ?>
+        </table>
+        <?php echo $block->addExtraHtml() ?>
+    </div>
+</div>
+

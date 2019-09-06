@@ -1,0 +1,144 @@
+<?php
+/**
+ * Mageplaza
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Mageplaza.com license that is
+ * available through the world-wide-web at this URL:
+ * https://www.mageplaza.com/LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category    Mageplaza
+ * @package     Mageplaza_Affiliate
+ * @copyright   Copyright (c) Mageplaza (https://www.mageplaza.com/)
+ * @license     https://www.mageplaza.com/LICENSE.txt
+ */
+?>
+<?php
+/** @var Mageplaza\Affiliate\Block\Account\Refer $block */
+
+$affiliateHelper = $block->getAffiliateHelper();
+?>
+
+<div class="box-account box-info box-affiliate affiliate-refer-content affiliate-block">
+    <?php
+    if ($blockId = $affiliateHelper->getReferringPage()) {
+     //   echo $block->loadCmsBlock($blockId);
+    } ?>
+</div>
+
+<div class="box-account box-info box-affiliate affiliate-refer-type">
+    <form action="<?= $block->getSendMailUrl() ?>" method="post" id="form-validate"
+          class="form form-edit-account form-affiliate form-affiliate-refer-send-mail">
+        <fieldset class="fieldset request">
+            <legend class="legend"><span><?php /* @escapeNotVerified */ echo __('Message to Members') ?></span></legend>
+            <br>
+            <div class="field sharing_email">
+                <label class="label" for="recipient_list">
+                    <span><?php /* @escapeNotVerified */ echo __('Affiliate Member Email List') ?></span>
+                </label>
+                <div class="control">
+                    <textarea name="contacts" id="recipient_list" class="affiliate_recipient_list input-text required"
+                              rows="9" data-validate="{required:true}"></textarea>
+                </div>
+
+            </div>
+
+        </fieldset>
+        <fieldset class="fieldset request">
+
+
+            <div class="field sharing_subject required">
+                <label class="label" for="refer_subject">
+                    <span><?php /* @escapeNotVerified */ echo __('Subject') ?></span>
+                </label>
+                <div class="control">
+                    <input id="refer_subject" class="input-text required" data-validate="{required:true}" type="text"
+                           title="<?php echo __('Subject') ?>" name="subject"
+                           value="<?php echo $affiliateHelper->getDefaultEmailSubject() ?>"/>
+                </div>
+            </div>
+            <div class="field sharing_content required">
+                <label class="label" for="refer_content">
+                    <span><?php /* @escapeNotVerified */ echo __('Your message') ?></span>
+                </label>
+                <div class="control">
+                    <textarea name="content" id="refer_content" class="input-text required affiliate-referral-message"
+                              rows="4" data-validate="{required:true}" cols="80"
+                              title="<?php echo __('Short Message') ?>"></textarea>
+                    <p class="note"><span><?php echo __('Just your message, no need to put Refer Url here.') ?></span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="actions-toolbar affiliate-clear">
+                <div class="primary">
+                    <button type="submit" id="refer-sendmail-button" class="action save primary"
+                            title="<?php /* @escapeNotVerified */ echo __('Send') ?>">
+                        <span><?php /* @escapeNotVerified */ echo __('Send') ?></span>
+                    </button>
+                </div>
+            </div>
+
+        </fieldset>
+    </form>
+</div>
+
+<script>
+    require([
+        "jquery",
+        "mage/mage"
+    ], function ($) {
+        var dataForm = $('#form-validate');
+        shiftRows();
+        dataForm.mage('validation', {
+            errorPlacement: function (error, element) {
+                error.insertAfter(element);
+            }
+        });
+
+        $(':checkbox').change(function() {
+           selectEmails();
+        });
+
+        function selectEmails(){
+
+          var emails = ['test@gmail.com'];
+          var email = $(".created_at").text();
+          var count =  document.getElementById("test-data-table").getElementsByTagName("tr").length;
+
+                 $('.created_at').each(function(i, obj) {
+                        console.log($(this).text());
+                 $('.affiliate_recipient_list').append($(this).text() + ' ,');
+            });
+        }
+
+
+        function shiftRows(){
+            var $table=$('table');
+            var rows = $table.find('tr').get();
+
+            rows.sort(function(a, b) {
+                var keyA = $(a).attr('tree');
+                var keyB = $(b).attr('tree');
+                if (keyA < keyB) return 1;
+                if (keyA > keyB) return -1;
+                return 0;
+            });
+
+            $.each(rows, function(index, row) {
+                $table.children('tbody').append(row);
+            });
+        }
+
+    });
+
+
+
+</script>
+<?php echo $this->getChildHtml('message.messages') ?>
